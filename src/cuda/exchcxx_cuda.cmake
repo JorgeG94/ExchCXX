@@ -26,6 +26,7 @@ find_package( CUDAToolkit REQUIRED )
 
 target_sources( exchcxx PRIVATE ${EXCHCXX_CUDA_SOURCES} )
 target_link_libraries( exchcxx PUBLIC CUDA::cudart )
+target_compile_definitions(exchcxx PUBLIC HAVE_CUDA)
 target_compile_features( exchcxx PRIVATE cuda_std_14 )
 target_compile_options( exchcxx
   PRIVATE

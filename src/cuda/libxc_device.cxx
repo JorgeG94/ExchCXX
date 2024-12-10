@@ -2,46 +2,52 @@
 #include <exchcxx/impl/builtin/util.hpp>
 #include <exchcxx/util/unused.hpp>
 #include <exchcxx/exceptions/exchcxx_exception.hpp>
+#include "gpu.hpp"
 //#include <functionals.cuh>
 
-void throw_if_fail( cudaError_t stat, std::string msg ) {
-  if( stat != cudaSuccess ) throw std::runtime_error( msg );
-}
+// void throw_if_fail( cudaError_t stat, std::string msg ) {
+//   if( stat != cudaSuccess ) throw std::runtime_error( msg );
+// }
 
 void recv_from_device( void* dest, const void* src, const size_t len ) {
-
-  auto stat = cudaMemcpy( dest, src, len, cudaMemcpyDeviceToHost );
-  throw_if_fail( stat, "recv failed" );
+  copy( dest, src, len );
+  // auto stat = cudaMemcpy( dest, src, len, cudaMemcpyDeviceToHost );
+  // throw_if_fail( stat, "recv failed" );
 
 }
 
 void recv_from_device( void* dest, const void* src, const size_t len, 
   cudaStream_t& stream ) {
 
-  auto stat = cudaMemcpyAsync( dest, src, len, cudaMemcpyDeviceToHost, stream );
-  throw_if_fail( stat, "recv failed" );
+  
+  copy_async( dest, src, len, stream );
+  // auto stat = cudaMemcpyAsync( dest, src, len, cudaMemcpyDeviceToHost, stream );
+  // throw_if_fail( stat, "recv failed" );
 
 }
 
 void send_to_device( void* dest, const void* src, const size_t len ) {
-
-  auto stat = cudaMemcpy( dest, src, len, cudaMemcpyHostToDevice);
-  throw_if_fail( stat, "send failed" );
+  copy( dest, src, len );
+  // auto stat = cudaMemcpy( dest, src, len, cudaMemcpyHostToDevice);
+  // throw_if_fail( stat, "send failed" );
 
 }
 
 void send_to_device( void* dest, const void* src, const size_t len, 
   cudaStream_t& stream ) {
 
-  auto stat = cudaMemcpyAsync( dest, src, len, cudaMemcpyHostToDevice, stream);
-  throw_if_fail( stat, "send failed" );
+  copy_async( dest, src, len, stream );
+  // auto stat = cudaMemcpyAsync( dest, src, len, cudaMemcpyHostToDevice, stream);
+  // throw_if_fail( stat, "send failed" );
 
 }
 
 void stream_sync( cudaStream_t& stream ) {
 
-  auto stat = cudaStreamSynchronize( stream );
-  throw_if_fail( stat, "sync failed" );
+  streamsync( stream );
+  
+  // auto stat = cudaStreamSynchronize( stream );
+  // throw_if_fail( stat, "sync failed" );
 
 }
 
